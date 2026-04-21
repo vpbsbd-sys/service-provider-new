@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMC - Provider Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --kmc-red: #e43329; --kmc-green: #00332b; }
+        body { background-color: #f4f4f4; }
+        .kmc-header { width: 100%; height: auto; border-bottom: 4px solid var(--kmc-red); }
+        .card { border-radius: 0 0 15px 15px; border: none; }
+        .btn-kmc { background-color: var(--kmc-red); color: white; font-weight: bold; border: none; }
+        .btn-kmc:hover { background-color: var(--kmc-green); color: white; }
+        .legal-notice { color: var(--kmc-red); font-size: 0.9rem; display: none; padding: 10px; border: 1px solid #ffcccc; background: #fff5f5; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container py-4">
+    <div class="mx-auto shadow-lg" style="max-width: 600px;">
+        <img src="image_c96b53.png" alt="KMC Logo" class="kmc-header">
+        
+        <div class="card p-4">
+            <h4 class="text-center mb-4 fw-bold" style="color: var(--kmc-green);">सेवा पुरवठादार नोंदणी फॉर्म</h4>
+            
+            <form id="kmcRegForm">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Full Name / पूर्ण नाव</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label class="form-label fw-bold">Age / वय</label>
+                        <input type="number" id="age" class="form-control" required>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label class="form-label fw-bold">Exp / अनुभव</label>
+                        <input type="number" id="exp" class="form-control" required>
+                    </div>
+                </div>
+
+                <div id="ageWarning" class="legal-notice mb-3">
+                    <strong>कायदेशीर सूचना:</strong> बालकामगार कायद्यानुसार, १८ वर्षांखालील व्यक्ती काम करण्यास पात्र नाही. आपण नोंदणी करू शकत नाही.
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mobile Number / मोबाईल नंबर</label>
+                    <input type="tel" id="mobile" class="form-control" pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकी नंबर" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Aadhar / आधार (१२ अंकी)</label>
+                    <input type="text" id="aadhar" class="form-control" pattern="\d{12}" maxlength="12" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Service / सेवेचा प्रकार</label>
+                    <select id="category" class="form-select" required>
+                        <option value="">-- निवडा / Select --</option>
+                        <option value="Plumber">Plumber / नळ कारागीर</option>
+                        <option value="Electrician">Electrician / इलेक्ट्रिशियन</option>
+                        <option value="Painter">Painter / रंगकाम</option>
+                        <option value="Appliance">Home Appliance Repair / घरगुती उपकरणे दुरुस्ती</option>
+                        <option value="Daba">Gharguti Dabba / घरगुती डबा</option>
+                        <option value="Gavandi">Gavandi / गवंडी काम</option>
+                        <option value="Rikshaw">Rikshaw / रिक्षा सेवा</option>
+                        <option value="CaretakerM">Care Taker (Male) / केअर टेकर (पुरुष)</option>
+                        <option value="CaretakerF">Care Taker (Female) / केअर टेकर (महिला)</option>
+                        <option value="DeathVan">Death Van / शववाहिका</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Area / परिसर</label>
+                    <select id="area" class="form-select" required>
+                        <option value="Sugar Mill">Sugar Mill / शुगर मिल</option>
+                        <option value="Rajarampuri">Rajarampuri / राजारामपुरी</option>
+                        <option value="Kasba Bavda">Kasba Bavda / कसबा बावडा</option>
+                        <option value="Shahupuri">Shahupuri / शाहूपुरी</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Photo / फोटो</label>
+                    <input type="file" id="photo" class="form-control" accept="image/*">
+                </div>
+
+                <button type="submit" id="regBtn" class="btn btn-kmc w-100 py-2 mt-2">नोंदणी पूर्ण करा</button>
+            </form>
+            <a href="finder.html" class="text-center d-block mt-3 text-decoration-none" style="color: var(--kmc-green);">Find Workers →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ageInput = document.getElementById('age');
+    const ageWarning = document.getElementById('ageWarning');
+    const regBtn = document.getElementById('regBtn');
+
+    ageInput.oninput = function() {
+        if(this.value < 18 && this.value != "") {
+            ageWarning.style.display = 'block';
+            regBtn.disabled = true;
+        } else {
+            ageWarning.style.display = 'none';
+            regBtn.disabled = false;
+        }
+    };
+
+    document.getElementById('kmcRegForm').onsubmit = function(e) {
+        e.preventDefault();
+        const photoFile = document.getElementById('photo').files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const data = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                exp: document.getElementById('exp').value,
+                mobile: document.getElementById('mobile').value, // Saved for Finder
+                cat: document.getElementById('category').value,
+                area: document.getElementById('area').value,
+                photo: event.target.result || 'https://via.placeholder.com/80'
+            };
+            let list = JSON.parse(localStorage.getItem('kmc_data')) || [];
+            list.push(data);
+            localStorage.setItem('kmc_data', JSON.stringify(list));
+            alert("नोंदणी यशस्वी!");
+            location.reload();
+        };
+        if(photoFile) reader.readAsDataURL(photoFile); else reader.onload({target:{result:''}});
+    };
+</script>
+</body>
+</html>
